@@ -1,0 +1,27 @@
+{% load static %} {# چیزایی که باید به پروژه لینک کنی لود میشن مثلا: عکس و css htmlو... #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> blog | {% block title %} {# کسی که ارث بری میکنه با مغیر title مینویسه و میاد اینجا #} {% endblock %}</title>
+    {% block head %} {# کسی که ارث بری میکنه با مغیر head مینویسه و میاد اینجا #} {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+
+</head>
+<body>
+{% include 'partials/heder.html' %}
+{% include 'partials/navigation.html'%}
+{% block content %} {# هر صفحه که ارث بری میکنه همه محتوای خودش رو اینجا بنویسه #} {% endblock %}
+{% include 'partials/footer.html' %}
+</body>
+</html>
+
+
+
+
+
+
+{# زبات جنگو تمپلین #}
+{#{{متغیر ها}}#}
+{#{{ متغیر| فیلتر }}#}
+{#{% دستورات %}#}

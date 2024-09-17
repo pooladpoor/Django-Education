@@ -1,0 +1,47 @@
+{% extends 'parent/base.html' %} {# اینجوری ارث بری میکنی #}
+{% block title %} صفحه اصلی {% endblock %} {# اینجوری تو جایی که صفحهه بیس که ارث بری کردی مشخص کرده مینویسی #}
+
+{% block head %}
+    <link rel="stylesheet" href="../../static/css/index.css">
+{% endblock %}
+
+{% block content %}
+    {% load blog_tags %} {# این رو مینویسی تا تمپلیت تگ هایی که خودت ساختی لود بشه #}
+
+    <P> تعداد پست ها: {% total_posts %} </P>
+    <P> تعداد کامنت ها: {% total_comments %}</P>
+    <P> تاریخ <a href="{%  last_post_url %}">آخرین پست</a> منتشر شده: {% last_post_date %} </P>
+
+    <br><hr>
+    {% latest_posts 3 %}
+
+    <br><hr>
+    <h2>محبوب ترین پست ها</h2>
+    {% most_popular_posts 3 as pop_posts %} {# اینجوری به تمپلیت تگ ورودی میدیم و میریزیمش نو یه متغیر که پایین بشه استفاده کرد #}
+    {% for post in pop_posts %}             {# نمیشه همینجوری خودش رو یزاری تو این خط حتما باید اسم مستعار بدی و اینجا استفاده کنی #}
+        <br>
+        <a href="{{ post.get_absolute_url }}">{{ post.title }}: with {{ post.comments_count }} comments</a>
+    {% endfor %} {#   تو بلاگ تگ این رو ساختیم ^^^^^^^^^^^^                                                          #}
+
+    <br><hr>
+    <h2>فعال ترین کاربران</h2>
+
+    <p>{% activat_users 2 as activs %}</p>
+        {% for a in activs %}
+            <p>{{ a }} "by {{ a.posts_count }} post"</p>
+        {% endfor %}
+
+    <br><hr>
+    <h2>طولانی ترین پست ها</h2>
+
+    <p>{% ext_reading_time 2 as ext %}</p>
+    {% for m in ext %}
+        {% if m == "..." %}
+                <p>{{ m }}</p>
+        {% else %}
+            <p><a href="{{ m.get_absolute_url }}">{{ m }}</a> : {{ m.reading_time }} min</p>
+        {% endif %}
+
+    {% endfor %}
+
+{% endblock %}

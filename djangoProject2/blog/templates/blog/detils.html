@@ -1,0 +1,38 @@
+{% extends 'parent/base.html' %} {# اینجوری ارث بری میکنی #}
+{% block title %} پست {% endblock %} {# اینجوری تو جایی که صفحهه بیس که ارث بری کردی مشخص کرده مینویسی #}
+
+{% block head %}
+    <link rel="stylesheet" href="../../static/css/details.css">
+{% endblock %}
+
+{% load blog_tags %}
+{% block content %}
+<h1>{{ post.title }}</h1>
+<h2>{{ post.description|markdown|cuss_filter}}</h2>
+<hr>
+<span>{{ post.publish }} (by  {{ post.author }})</span>
+<hr><br>
+
+    <div>
+    {% with comments.count as cm_count%}
+    {{ cm_count }} comment{{ cm_count|pluralize }}
+    </div>
+
+     <div class="comments">
+     {% for cm in comments %}
+         {{ cm.body|linebreaks}} {# این فیلتر کاری میکنه با اینتر بره خط بعدی  #}
+         <br>
+         {{ cm.name }}
+     {% empty %}
+         کامنتی وجود ندارد!
+     {% endfor %}
+     </div>
+    {% endwith %}
+    <form method="post" action="{% url 'blog:post_comment' post.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="افزودن کامنت">
+    </form>
+
+
+{% endblock %}

@@ -1,0 +1,41 @@
+
+{% extends 'parent/base.html' %} {#اینجوری ارث بری میکنی  #}
+{% block title %} لیست پست ها {% endblock %} {# اینجوری تو جایی که صفحهه بیس که ارث بری کردی مشخص کرده مینویسی #}
+
+{% block head %}
+    <link rel="stylesheet" href="../../static/css/list.css">
+{% endblock %}
+
+{% block content %}
+
+<ul class="tilesWrap">
+{# اینجوری از for النجا استفاده میکنی {# متغیر posts رو موقع رندر شدن این فایل ویو میفرسته #}
+{% for post in posts %}
+	<li>
+		<h2>{{ forloop.counter }}</h2>
+		<h3>{{ post.title }}</h3>
+		<p>
+            {{ post.description|truncatewords:4 }} {#ین فیلتر فقط 4 کلمه اول پاراگراف رو نشون میده سه نقطه میزار برای بقیه  #}
+		</p>
+
+        {# اینجوری میره اون url رو باز میکنه و ورودیش رو هم میده #}
+{#        <a href="{% url 'blog:posts_detail' post.id %}">#}
+        <a href="{{ post.get_absolute_url }}">
+            <button>Read more</button>
+        </a>
+
+	</li>
+{% endfor %}
+</ul>
+
+<div class="page_but">
+    {% include "partials/pagination.html" with page=page_obj %} {# اینجوری html دیگه رو اینجا وارد میکن #}
+    {#    _____^_____ متغیر پیج اونجا همون پست اینجا هست  #}
+</div>
+
+{% endblock %}
+
+
+
+
+

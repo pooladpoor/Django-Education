@@ -1,0 +1,75 @@
+{% extends 'parent/base.html' %}
+{% block title %}ticket form{% endblock %}
+{% block content %}
+
+    <form method="post">
+    {% csrf_token %} {# برای امنیت هست #}
+{##1##################################################################################}
+{#    {{ form.as_p }}   خودکار همه چیز های فرم رو تو تگ p ورودی میگیره از کاربر و فرم رو میسازه برات#}
+{##2##################################################################################}
+{#  اینجوری هم میشه نوشت که کمی غیر خودکار تر هست       #}
+{#        {% for field in form %}#}
+{#            {{ field.label_tag }}#}
+{#            {{ field }}#}
+{#            {{ field.errors }}#}
+{#        {% endfor %}#}
+{############################# یا میشه همه چی رو کامل دستی بنویسی###################3##}
+
+
+{#*#}  {# کاری میکنه که اون چیزی که کاربر زده با نمایش ارور نپره #}
+
+        نام و نام خانوادگی:
+    <input type="text" name="name" required
+            {% if form.name.value %} value="{{ form.name.value }}" {% endif %}> {#*#}
+
+        <br>
+        ایمیل:
+    <input type="email" name="email"
+            {% if form.email.value %} value="{{ form.email.value }}" {% endif %} > {#*#}
+
+        <br>
+        شماره تماس:
+    <input type="text" name="phone" required maxlength="11"
+    {% if form.phone.value %} value="{{ form.phone.value }}" {% endif %}> {#*#}
+        <br>
+        متن:
+    <textarea name="message" >
+        {% if form.message.value %}{{ form.message.value }}{% endif %} {#*#}
+    </textarea>
+        <br>
+
+    <select name="subject"> {# دیگه میتونی موقع ساخت آبجکت فرم انتخابی نزاری #}
+        <option value="پیشنهاد"
+                {% if form.subject.value == 'پیشنهاد' %} selected {% endif %}> {#*#}
+            پیشنهادات</option>
+        <option value="انتقاد"
+        {% if form.subject.value == 'انتقاد' %} selected {% endif %}> {#*#}
+            انتقادات</option>
+        <option value="گزارش"
+                {% if form.subject.value == 'گزارش' %} selected {% endif %}> {#*#}
+            گزارش</option>
+    </select>
+        <br>
+    <input type="submit" value="ثبت تیکت">   {# دکمه ثبت و ارسال فرم #}
+    </form>
+
+    {# رو ارور های همه فیلد ها میچرخیم و نمایش میدیم #}
+    {% if form.errors %}
+        لطفا خطاهای زیر را اصلاح کنید!
+        <br>
+        {% for field in form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    {{ field.label }} : {{ error }}
+                    <br>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {%  if form.non_field_errors %} {# ارور هایی که  مربوط به فیلد خاصی نیست #}
+        {{ form.non_field_errors }}
+    {% endif %}
+
+
+{% endblock %}
